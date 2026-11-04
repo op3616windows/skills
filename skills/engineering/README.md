@@ -17,6 +17,8 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[implement-spec](./implement-spec/SKILL.md)**: Implement a whole spec on one integration branch. Works the tickets as a task graph, running implementer subagents across the ready frontier for maximum concurrency, then closes out with `/code-review`.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[qa-session](./qa-session/SKILL.md)**: Lead an interactive acceptance and exploratory QA session against a feature or bugfix, verifying acceptance criteria and filing standardized bug reports.
+- **[post-mortem](./post-mortem/SKILL.md)**: Lead a blameless post-mortem analysis after an incident or severe bug: establish timeline, run 5 Whys, identify detection gaps, record ADRs, and trigger retro.
 
 ## Model-invoked
 
@@ -29,6 +31,10 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[tdd](./tdd/SKILL.md)**: Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
 - **[domain-modeling](./domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model by challenging terms, stress-testing with scenarios, and updating `GLOSSARY.md` and ADRs inline.
 - **[codebase-design](./codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: small interfaces, clean seams, testable through the interface.
-- **[code-review](./code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents.
+- **[code-review](./code-review/SKILL.md)**: Three-axis review of the diff since a fixed point: **Standards** (repo coding standards, plus a Fowler smell baseline), **Spec** (originating issue/spec compliance), and **Security** (AppSec and privacy audit via `security-review`), run as parallel sub-agents.
 - **[pr](./pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
+- **[ux-states](./ux-states/SKILL.md)**: Design and specify a comprehensive UI state matrix (empty, loading, optimistic UI, error recovery, accessibility, and localization) for frontend components or user flows.
+- **[telemetry-design](./telemetry-design/SKILL.md)**: Define product analytics events, structured logs, system metrics, and error boundaries for a feature.
+- **[expand-contract](./expand-contract/SKILL.md)**: Plan and execute zero-downtime database schema migrations, breaking API changes, or wide refactors using the Expand-Contract pattern.
+- **[security-review](./security-review/SKILL.md)**: Audit a git diff, branch, or PR for security vulnerabilities, authorization flaws, PII leaks, and injection risks.

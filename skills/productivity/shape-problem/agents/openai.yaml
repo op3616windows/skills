@@ -1,0 +1,5 @@
+interface:
+  display_name: "Shape Problem"
+  short_description: "Frame customer problems before technical design"
+policy:
+  allow_implicit_invocation: false

@@ -16,7 +16,11 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. If the feature touches user-facing interfaces or frontend components, Call the Skill tool with "ux-states" to establish the UI State Matrix across empty, loading, optimistic updates, error recovery, accessibility, and localization.
+
+4. Call the Skill tool with "telemetry-design" to specify behavioral analytics events, structured logs, metrics, and error boundaries for the feature.
+
+5. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
 
 <spec-template>
 
@@ -55,6 +59,14 @@ A list of implementation decisions that were made. This can include:
 Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
 
 Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+
+## UI States
+
+If the feature involves user interfaces, embed the UI State Matrix covering empty, loading, optimistic UI, error recovery, accessibility, and localization.
+
+## Telemetry & Success Metrics
+
+A list of behavioral analytics events, structured log contexts, system metrics, and alert rules defined for this feature.
 
 ## Testing Decisions
 

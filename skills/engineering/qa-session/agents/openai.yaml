@@ -1,0 +1,5 @@
+interface:
+  display_name: "QA Session"
+  short_description: "Interactive acceptance testing and defect filing"
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Telemetry Design"
+  short_description: "Design analytics events, structured logs, and metrics"

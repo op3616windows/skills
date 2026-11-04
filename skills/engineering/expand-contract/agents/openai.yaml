@@ -1,0 +1,3 @@
+interface:
+  display_name: "Expand Contract"
+  short_description: "Zero-downtime database and API migration planning"

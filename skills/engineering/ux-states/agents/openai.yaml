@@ -1,0 +1,3 @@
+interface:
+  display_name: "UX States"
+  short_description: "Design UI state matrices: empty, loading, errors, a11y"

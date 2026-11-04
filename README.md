@@ -227,6 +227,8 @@ Skills I use daily for code work.
 - **[implement-spec](./skills/engineering/implement-spec/SKILL.md)**: Implement a whole spec on one integration branch. Works the tickets as a task graph, running implementer subagents across the ready frontier for maximum concurrency, then closes out with `/code-review`.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker, and resolve them one at a time until the way to the destination is clear.
 - **[retro](./skills/engineering/retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[qa-session](./skills/engineering/qa-session/SKILL.md)**: Lead an interactive acceptance and exploratory QA session against a feature or bugfix, verifying acceptance criteria and filing standardized bug reports.
+- **[post-mortem](./skills/engineering/post-mortem/SKILL.md)**: Lead a blameless post-mortem analysis after an incident or severe bug: establish timeline, run 5 Whys, identify detection gaps, record ADRs, and trigger retro.
 
 **Model-invoked**
 
@@ -236,9 +238,13 @@ Skills I use daily for code work.
 - **[tdd](./skills/engineering/tdd/SKILL.md)**: Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)**: Actively build and sharpen a project's domain model: challenge terms against the glossary, stress-test with edge-case scenarios, and update `GLOSSARY.md` and ADRs inline.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)**: Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
-- **[code-review](./skills/engineering/code-review/SKILL.md)**: Two-axis review of the diff since a fixed point: **Standards** (does it follow the repo's coding standards, plus a Fowler smell baseline?) and **Spec** (does it faithfully implement the originating issue/spec?), run as parallel sub-agents so neither pollutes the other.
+- **[code-review](./skills/engineering/code-review/SKILL.md)**: Three-axis review of the diff since a fixed point: **Standards** (repo coding standards, plus a Fowler smell baseline), **Spec** (originating issue/spec compliance), and **Security** (AppSec and privacy audit via `security-review`), run as parallel sub-agents.
 - **[pr](./skills/engineering/pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
+- **[ux-states](./skills/engineering/ux-states/SKILL.md)**: Design and specify a comprehensive UI state matrix (empty, loading, optimistic UI, error recovery, accessibility, and localization) for frontend components or user flows.
+- **[telemetry-design](./skills/engineering/telemetry-design/SKILL.md)**: Define product analytics events, structured logs, system metrics, and error boundaries for a feature.
+- **[expand-contract](./skills/engineering/expand-contract/SKILL.md)**: Plan and execute zero-downtime database schema migrations, breaking API changes, or wide refactors using the Expand-Contract pattern.
+- **[security-review](./skills/engineering/security-review/SKILL.md)**: Audit a git diff, branch, or PR for security vulnerabilities, authorization flaws, PII leaks, and injection risks.
 
 ### Productivity
 
@@ -251,6 +257,8 @@ General workflow tools, not code-specific.
 - **[teach](./skills/productivity/teach/SKILL.md)**: Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[to-questionnaire](./skills/productivity/to-questionnaire/SKILL.md)**: Turn a decision you can't answer alone into a Markdown questionnaire for the one person who can, filled in async, or together over a meeting. It grills you about the send (who it's for, what you need back), not the subject.
 - **[wait-what](./skills/productivity/wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using your `GLOSSARY.md` vocabulary.
+- **[shape-problem](./skills/productivity/shape-problem/SKILL.md)**: Interview and synthesize raw customer feedback, support logs, or metrics into a focused problem statement before discussing technical solutions.
+- **[release-notes](./skills/productivity/release-notes/SKILL.md)**: Generate user-facing release notes from merged pull requests, commits, and closed issues since the last release, translating technical diffs into customer value.
 
 **Model-invoked**
 

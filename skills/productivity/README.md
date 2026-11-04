@@ -11,6 +11,8 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[teach](./teach/SKILL.md)**: Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[to-questionnaire](./to-questionnaire/SKILL.md)**: Turn a decision you can't answer alone into a Markdown questionnaire for the one person who can (filled in async, or together over a meeting).
 - **[wait-what](./wait-what/SKILL.md)**: Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using your `GLOSSARY.md` vocabulary.
+- **[shape-problem](./shape-problem/SKILL.md)**: Interview and synthesize raw customer feedback, support logs, or metrics into a focused problem statement before discussing technical solutions.
+- **[release-notes](./release-notes/SKILL.md)**: Generate user-facing release notes from merged pull requests, commits, and closed issues since the last release, translating technical diffs into customer value.
 
 ## Model-invoked
 

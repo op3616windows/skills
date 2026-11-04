@@ -39,12 +39,20 @@
     "./skills/engineering/pr",
     "./skills/engineering/retro",
     "./skills/engineering/wizard",
+    "./skills/engineering/ux-states",
+    "./skills/engineering/telemetry-design",
+    "./skills/engineering/expand-contract",
+    "./skills/engineering/security-review",
+    "./skills/engineering/qa-session",
+    "./skills/engineering/post-mortem",
     "./skills/productivity/grill-me",
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",
     "./skills/productivity/teach",
     "./skills/productivity/to-questionnaire",
     "./skills/productivity/wait-what",
-    "./skills/productivity/writing-for-agents"
+    "./skills/productivity/writing-for-agents",
+    "./skills/productivity/shape-problem",
+    "./skills/productivity/release-notes"
   ]
 }
