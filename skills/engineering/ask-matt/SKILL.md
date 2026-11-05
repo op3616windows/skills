@@ -31,6 +31,7 @@ The route most work travels. You have an idea and want it built.
    Either way, the code gets built by driving **`/tdd`** (one red-green slice at a time) and closes out with **`/code-review`**, a three-axis review (Standards + Spec + Security via **`security-review`**) of the diff. `/implement` runs both per ticket; `/implement-spec`'s implementers each drive `/tdd`, and it runs one `/code-review` over the integration branch.
 
    Before opening a PR, run **`/qa-session`** to conduct an interactive acceptance and exploratory testing run against the running application and spec, logging any discovered defects directly to the tracker.
+   Follow up with **`e2e-testing`** to codify verified critical user journeys into automated, resilient browser test suites (Playwright, Cypress) with zero hard waits and accessibility-first locators, ensuring the capability is permanently protected against regressions in CI.
 
    When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change, before/after evidence that it works, and a one-way or two-way door call informed by `expand-contract`. It's model-invoked, so the agent reaches for it whenever it writes a PR.
 
@@ -73,6 +74,7 @@ Two model-invoked references that run *beneath* the other skills, each the singl
 - **`telemetry-design`**: structured observability vocabulary across behavioral analytics events, structured logs, SLI metrics, and alert boundaries.
 - **`expand-contract`**: zero-downtime migration pattern (Expand, Backfill, Switch, Contract) and door-type risk assessment for database schemas and API contracts.
 - **`security-review`**: AppSec and data privacy audit scanning authorization, tenant isolation, PII leaks, injection vectors, and supply chain.
+- **`e2e-testing`**: automated browser test suite design, accessibility locators, and flaky test diagnosis for critical user journeys.
 ## Phase boundaries
 
 A **phase** is a chunk of work inside a session: the grilling, the implementation, the QA. At the **boundary** between two of them you have five options, and picking between them is the fuzziest decision in this whole map:

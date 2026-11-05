@@ -45,6 +45,7 @@
     "./skills/engineering/security-review",
     "./skills/engineering/qa-session",
     "./skills/engineering/post-mortem",
+    "./skills/engineering/e2e-testing",
     "./skills/productivity/grill-me",
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",

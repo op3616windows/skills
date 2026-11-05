@@ -10,16 +10,16 @@ It uses a real-world SaaS feature: **Self-Serve Organization Data Export with As
 
 ## Workflow Overview
 
-The product lifecycle flows across nine disciplined stages:
+The product lifecycle flows across ten disciplined stages:
 
 ```
 [1. /shape-problem] ──> [2. /grill-with-docs] ──> [3. /to-spec (+ ux-states, telemetry-design)]
                                                                   │
                                                                   ▼
-[6. /qa-session] <── [5. /implement (+ /tdd)] <── [4. /to-tickets (+ expand-contract)]
+[6. /qa-session] ──> [7. /e2e-testing] <── [5. /implement (+ /tdd)] <── [4. /to-tickets (+ expand-contract)]
         │
         ▼
-[7. /code-review (+ security-review)] ──> [8. /pr & /release-notes] ──> [9. /post-mortem & /retro]
+[8. /code-review (+ security-review)] ──> [9. /pr & /release-notes] ──> [10. /post-mortem & /retro]
 ```
 
 ---
@@ -220,8 +220,61 @@ Five duplicate jobs were inserted into `export_jobs`, causing redundant worker l
 
 ---
 
-## Stage 7: Tri-Axis Code Review (`/code-review`)
+## Stage 7: Automated E2E Regression Testing (`/e2e-testing`)
 
+### Context
+With the acceptance criteria verified in `/qa-session`, codify the multi-step user journey into an automated browser test suite so future changes cannot introduce regressions on CI.
+
+### Developer Prompt
+```text
+/e2e-testing
+Codify the verified data export journey from our QA session into an automated Playwright test. Use accessible role locators and fast storage state authentication.
+```
+
+### Under the Hood
+1. Inspects acceptance criteria and scaffolds `e2e/data-export.spec.ts`.
+2. Loads authenticated session state via `storageState` to bypass repetitive UI login forms.
+3. Uses semantic accessibility locators (`page.getByRole`, `page.getByLabel`).
+4. Applies web-first assertions (`await expect(button).toBeEnabled()`) with zero hard timeouts.
+5. Executes `npx playwright test e2e/data-export.spec.ts --repeat-each=3` to confirm stability.
+
+### Concrete Artifact Output
+```typescript
+import { test, expect } from "@playwright/test";
+
+test.describe("Organization Data Export Journey", () => {
+  test.use({ storageState: "playwright/.auth/admin.json" });
+
+  test("billing admin triggers export and downloads verified CSV", async ({ page }) => {
+    await page.goto("/settings/billing/export");
+
+    // Accessible interaction without brittle CSS classes
+    await page.getByRole("button", { name: /request export/i }).click();
+
+    const modal = page.getByRole("dialog", { name: /confirm export/i });
+    await expect(modal).toBeVisible();
+
+    await modal.getByRole("combobox", { name: /format/i }).selectOption("csv");
+    await modal.getByRole("button", { name: /start export/i }).click();
+
+    // Verify optimistic transition and status feedback
+    await expect(page.getByText(/export requested/i)).toBeVisible();
+
+    // Wait for async worker completion and download event
+    const downloadPromise = page.waitForEvent("download");
+    const downloadButton = page.getByRole("button", { name: /download ready file/i });
+    await expect(downloadButton).toBeEnabled({ timeout: 30000 });
+    await downloadButton.click();
+
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(/^export-.*\.csv$/);
+  });
+});
+```
+
+---
+
+## Stage 8: Tri-Axis Code Review (`/code-review`)
 ### Context
 Reviewing the branch diff before opening the pull request.
 
@@ -256,7 +309,7 @@ Spawns three sub-agents in parallel with fresh context windows:
 
 ---
 
-## Stage 8: Pull Request & Customer Release Notes (`/pr` & `/release-notes`)
+## Stage 9: Pull Request & Customer Release Notes (`/pr` & `/release-notes`)
 
 ### 1. Opening the Pull Request
 The agent uses `/pr` to assess migration risk via `expand-contract`:
@@ -298,7 +351,7 @@ Organizations can now independently export their complete transaction and invoic
 
 ---
 
-## Stage 9: Operational Incident & Prevention (`/post-mortem` & `/retro`)
+## Stage 10: Operational Incident & Prevention (`/post-mortem` & `/retro`)
 
 ### Context
 In production, a tenant with 500,000 records triggered an export that caused worker Out-Of-Memory (OOM) crashes. The incident was mitigated by switching the worker to database streaming cursors.
@@ -322,6 +375,7 @@ The export worker OOM incident has been mitigated. Guide me through a blameless 
 
 1. **Zero Wasted Development**: `shape-problem` prevents building the wrong capability before code is touched.
 2. **Predictable User Experience**: `ux-states` guarantees all network, loading, and recovery states are specified.
-3. **Safe Deployments**: `expand-contract` eliminates database locks and breaking API cutovers.
-4. **Data Isolation**: `security-review` catches multi-tenant leaks and IDOR vulnerabilities before merge.
-5. **Continuous Learning**: `post-mortem` and `retro` transform production incidents into automated guardrails.
+3. **Automated CI Regression Shield**: `e2e-testing` codifies verified journeys into resilient Playwright suites with zero flakiness.
+4. **Safe Deployments**: `expand-contract` eliminates database locks and breaking API cutovers.
+5. **Data Isolation**: `security-review` catches multi-tenant leaks and IDOR vulnerabilities before merge.
+6. **Continuous Learning**: `post-mortem` and `retro` transform production incidents into automated guardrails.

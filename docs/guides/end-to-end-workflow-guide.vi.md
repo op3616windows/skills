@@ -10,16 +10,16 @@ Ví dụ xuyên suốt là tính năng SaaS thực chiến: **Self-Serve Organiz
 
 ## Tổng quan Luồng Công Việc (Workflow Overview)
 
-Toàn bộ vòng đời phát triển trải qua 9 giai đoạn có kỷ luật:
+Toàn bộ vòng đời phát triển trải qua 10 giai đoạn có kỷ luật:
 
 ```
 [1. /shape-problem] ──> [2. /grill-with-docs] ──> [3. /to-spec (+ ux-states, telemetry-design)]
                                                                   │
                                                                   ▼
-[6. /qa-session] <── [5. /implement (+ /tdd)] <── [4. /to-tickets (+ expand-contract)]
+[6. /qa-session] ──> [7. /e2e-testing] <── [5. /implement (+ /tdd)] <── [4. /to-tickets (+ expand-contract)]
         │
         ▼
-[7. /code-review (+ security-review)] ──> [8. /pr & /release-notes] ──> [9. /post-mortem & /retro]
+[8. /code-review (+ security-review)] ──> [9. /pr & /release-notes] ──> [10. /post-mortem & /retro]
 ```
 
 ---
@@ -220,8 +220,61 @@ Five duplicate jobs were inserted into `export_jobs`, causing redundant worker l
 
 ---
 
-## Giai đoạn 7: Review Code Đa Chiều (`/code-review`)
+## Giai đoạn 7: Kiểm Thử E2E Trình Duyệt Tự Động (`/e2e-testing`)
 
+### Bối cảnh
+Sau khi các tiêu chí nghiệm thu được kiểm chứng trong `/qa-session`, cần tự động hóa hành trình người dùng then chốt (Critical User Journey) này thành bộ test Playwright/Cypress tự động để ngăn chặn hoàn toàn lỗi tái diễn (regression) trên CI/CD.
+
+### Prompt của Developer
+```text
+/e2e-testing
+Hãy tự động hóa hành trình export dữ liệu vừa được nghiệm thu trong phiên QA thành bộ test Playwright E2E hoàn chỉnh. Sử dụng accessible role locators và cơ chế xác thực storageState nhanh.
+```
+
+### Xử lý Dưới Nền
+1. Đọc lại các bước nghiệm thu từ spec và tạo file test `e2e/data-export.spec.ts`.
+2. Sử dụng fixture `storageState` để nạp sẵn cookie phiên đăng nhập của admin, bỏ qua thao tác login form lặp lại tốn thời gian.
+3. Dùng bộ chọn theo ngữ nghĩa tiếp cận (`page.getByRole`, `page.getByLabel`) thay vì class CSS dễ vỡ.
+4. Sử dụng assertions tự động retry (`await expect(button).toBeEnabled()`), tuyệt đối không dùng sleep cứng (`waitForTimeout`).
+5. Chạy kiểm thử kiểm tra độ ổn định nhiều lần: `npx playwright test e2e/data-export.spec.ts --repeat-each=3`.
+
+### Đầu ra Thực tế (Playwright E2E Test Suite)
+```typescript
+import { test, expect } from "@playwright/test";
+
+test.describe("Hành Trình Tự Xuất Dữ Liệu Tổ Chức", () => {
+  test.use({ storageState: "playwright/.auth/admin.json" });
+
+  test("billing admin khởi tạo export và tải về file CSV chuẩn xác", async ({ page }) => {
+    await page.goto("/settings/billing/export");
+
+    // Tương tác chuẩn theo vai trò ngữ nghĩa tiếp cận (a11y)
+    await page.getByRole("button", { name: /request export/i }).click();
+
+    const modal = page.getByRole("dialog", { name: /confirm export/i });
+    await expect(modal).toBeVisible();
+
+    await modal.getByRole("combobox", { name: /format/i }).selectOption("csv");
+    await modal.getByRole("button", { name: /start export/i }).click();
+
+    // Kiểm chứng phản hồi trạng thái lạc quan
+    await expect(page.getByText(/export requested/i)).toBeVisible();
+
+    // Chờ sự kiện hoàn thành job bất đồng bộ và tải file
+    const downloadPromise = page.waitForEvent("download");
+    const downloadButton = page.getByRole("button", { name: /download ready file/i });
+    await expect(downloadButton).toBeEnabled({ timeout: 30000 });
+    await downloadButton.click();
+
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(/^export-.*\.csv$/);
+  });
+});
+```
+
+---
+
+## Giai đoạn 8: Review Code Đa Chiều (`/code-review`)
 ### Bối cảnh
 Kiểm tra toàn bộ diff trên nhánh trước khi tạo Pull Request chính thức.
 
@@ -256,7 +309,7 @@ Khởi chạy đồng thời 3 sub-agents độc lập trong fresh context windo
 
 ---
 
-## Giai đoạn 8: Pull Request & Thông Báo Bản Phát Hành (`/pr` & `/release-notes`)
+## Giai đoạn 9: Pull Request & Thông Báo Bản Phát Hành (`/pr` & `/release-notes`)
 
 ### 1. Tạo Pull Request
 Agent tự động phân loại rủi ro triển khai theo `expand-contract`:
@@ -298,7 +351,7 @@ Organizations can now independently export their complete transaction and invoic
 
 ---
 
-## Giai đoạn 9: Xử Lý Sự Cố Vận Hành & Học Hỏi (`/post-mortem` & `/retro`)
+## Giai đoạn 10: Xử Lý Sự Cố Vận Hành & Học Hỏi (`/post-mortem` & `/retro`)
 
 ### Bối cảnh
 Trên môi trường Production, một doanh nghiệp lớn chứa 500.000 dòng dữ liệu tiến hành export khiến worker bị lỗi tràn bộ nhớ (Out of Memory - OOM). Sự cố đã được xử lý khẩn bằng việc chuyển đổi sang database streaming cursor.
@@ -322,6 +375,7 @@ Sự cố OOM worker export đã được khắc phục. Hãy cùng tôi xây d�
 
 1. **Không Lãng Phí Nỗ Lực:** `shape-problem` chặn đứng việc lập trình sai tính năng ngay từ đầu.
 2. **Giao Diện Nhất Quán:** `ux-states` bao quát toàn bộ trạng thái mạng, tải dữ liệu, lỗi và khả năng tiếp cận.
-3. **Triển Khai An Toàn Tuyệt Đối:** `expand-contract` loại trừ nguy cơ downtime cơ sở dữ liệu và đứt gãy API.
-4. **Cô Lập Dữ Liệu Đa Người Thuê:** `security-review` phát hiện kịp thời các lỗ hổng IDOR trước khi merge.
-5. **Cải Tiến Hệ Thống Liên Tục:** `post-mortem` và `retro` biến sự cố vận hành thành các chốt chặn tự động cho tương lai.
+3. **Lá Chắn Chống Lỗi Tái Diễn Trên CI:** `e2e-testing` tự động hóa các hành trình sống còn thành test Playwright ổn định, không flaky.
+4. **Triển Khai An Toàn Tuyệt Đối:** `expand-contract` loại trừ nguy cơ downtime cơ sở dữ liệu và đứt gãy API.
+5. **Cô Lập Dữ Liệu Đa Người Thuê:** `security-review` phát hiện kịp thời các lỗ hổng IDOR trước khi merge.
+6. **Cải Tiến Hệ Thống Liên Tục:** `post-mortem` và `retro` biến sự cố vận hành thành các chốt chặn tự động cho tương lai.

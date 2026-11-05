@@ -38,3 +38,4 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[telemetry-design](./telemetry-design/SKILL.md)**: Define product analytics events, structured logs, system metrics, and error boundaries for a feature.
 - **[expand-contract](./expand-contract/SKILL.md)**: Plan and execute zero-downtime database schema migrations, breaking API changes, or wide refactors using the Expand-Contract pattern.
 - **[security-review](./security-review/SKILL.md)**: Audit a git diff, branch, or PR for security vulnerabilities, authorization flaws, PII leaks, and injection risks.
+- **[e2e-testing](./e2e-testing/SKILL.md)**: Author, maintain, run, and debug resilient end-to-end browser tests (Playwright, Cypress) for critical user journeys.

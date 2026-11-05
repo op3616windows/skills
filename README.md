@@ -132,6 +132,8 @@ Here is how to navigate the full product lifecycle from raw idea to production o
                       │
 [Acceptance QA]  /qa-session ──(Defect filed)──> /diagnosing-bugs
                       │
+[Automated E2E]  /e2e-testing (Playwright CUJ regression)
+                      │
 [Review & Gate]  /code-review (Standards + Spec + security-review)
                       │
 [Ship]           /pr ──> Merge
@@ -157,9 +159,10 @@ Before jumping into code or database schemas, isolate the customer struggle.
 - Build tickets using **`/implement`** (one ticket at a time, clearing context between tickets) or **`/implement-spec`** (orchestrating multiple implementer subagents across the task graph in parallel).
 - Implementation drives **`/tdd`**, enforcing red-green-refactor cycles at pre-agreed seams.
 
-### Phase 5: Interactive Acceptance QA
+### Phase 5: Interactive Acceptance QA & Automated E2E Suites
 - Before opening a pull request, run **`/qa-session`** to test the running application against the originating spec. It verifies happy paths, edge boundaries, and failure recoveries.
 - When an anomaly is discovered, it logs a standardized defect ticket to your issue tracker rather than patching code silently.
+- Run **`/e2e-testing`** to codify verified critical user journeys (CUJ) into permanent, automated browser tests (Playwright/Cypress) using accessibility-first locators and fast storage state fixtures.
 
 ### Phase 6: Three-Axis Review & Pull Request
 - Run **`/code-review`** to audit the diff along three independent parallel axes:
@@ -253,6 +256,7 @@ Skills split on one axis: **invocation mode**.
 - **[code-review](./skills/engineering/code-review/SKILL.md)**: Three-axis review of the diff since a fixed point: **Standards** (repo coding standards, plus a Fowler smell baseline), **Spec** (originating issue/spec compliance), and **Security** (AppSec and privacy audit via `security-review`), run as parallel sub-agents.
 - **[pr](./skills/engineering/pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
+- **[e2e-testing](./skills/engineering/e2e-testing/SKILL.md)**: Author, maintain, run, and debug resilient end-to-end browser tests (Playwright, Cypress) for critical user journeys.
 
 ### Productivity
 
