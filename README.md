@@ -116,6 +116,8 @@ It will:
 ## Complete End-to-End Workflow Guide
 
 Here is how to navigate the full product lifecycle from raw idea to production operations:
+> For a complete, step-by-step example with exact developer prompts and outputs, read the [End-to-End Workflow Guide (English)](docs/guides/end-to-end-workflow-guide.md) or [Bản Hướng Dẫn Vận Hành (Tiếng Việt)](docs/guides/end-to-end-workflow-guide.vi.md).
+
 
 ```txt
 [Discovery]      /shape-problem
