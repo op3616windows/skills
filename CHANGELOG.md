@@ -1,5 +1,11 @@
 # mattpocock-skills
 
+## 1.5.0
+
+### Minor Changes
+
+- [`fb055ce`](https://github.com/op3616windows/skills/commit/fb055ce06b37e8d9199899c8759ab054d769b72c) Thanks [@op3616windows](https://github.com/op3616windows)! - Add `e2e-testing` skill for authoring, running, and diagnosing resilient Playwright and Cypress browser tests covering critical user journeys.
+
 ## 1.4.0
 
 ### Minor Changes
